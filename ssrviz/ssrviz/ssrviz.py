@@ -38,11 +38,58 @@ def main():
 
 	parser = GooeyParser(
 
-		description='''The CSV_builder protocol can be used to create the csv annotation file,
-the SSR_plot protocol starts the plotting window, the Add_pdb protocol allows to add
-structure numbering to an '*.stats.csv' file''')
+		description='''SSR_plot: parses the input and opens the SSR_draw window
+CSV_builder: helper tool to create the CSV file with the subfamily class labels
+Add_pdb: helper tool to add structure (PDB) indices to a '*.stats.csv' file
+		''')
 
 	subs = parser.add_subparsers(help='commands', dest='command')
+
+	################################
+	# SSR plot parser
+	################################
+
+	ssp_plot_parser = subs.add_parser('SSR_plot', help='Creates the differnce pssm plot, based on the class_label.csv file and the converted alignmet file')
+
+	ssp_plot_parser_r = ssp_plot_parser.add_argument_group('Required arguments')
+
+	ssp_plot_parser_r.add_argument(
+						'-i', '--input-csv',
+						metavar = 'Input CSV file',
+						required=True,
+						dest = 'csv',
+						help='Must be a csv file that with corresponding names to the alignment',
+						widget='FileChooser',
+						)
+
+	ssp_plot_parser_r.add_argument(
+						'-cl', '--class_label',
+						metavar = 'Column of subfamily class label',
+						#required=True,
+						default = 'Class',
+						dest = 'cl',
+						help='The name of the column with the subfamily class label in the CSV file',
+						)
+
+	ssp_plot_parser_r.add_argument(
+						'-a', '--alignment',
+						metavar = 'Alignment',
+						required=True,
+						dest = 'ali',
+						help='Input file, must be a sequence alignment with corresponding names to the CSV file',
+						widget='FileChooser'
+						)
+
+	ssp_plot_parser_r.add_argument(
+					'-v', '--verbose',
+					metavar = 'Verbose Mode',
+					required=False,
+					dest = 'ver',
+					help='Shows additional details',
+					action='store_true',
+					default = False,
+					)
+
 
 	################################
 	# CSV builder
@@ -112,53 +159,6 @@ such as notepad or sublime or online: https://regex101.com/
 						default = False,
 						help='Allows to overwrite the created CSV files'
 						)
-
-	################################
-	# SSR plot parser
-	################################
-
-	ssp_plot_parser = subs.add_parser('SSR_plot', help='Creates the differnce pssm plot, based on the class_label.csv file and the converted alignmet file')
-
-	ssp_plot_parser_r = ssp_plot_parser.add_argument_group('Required arguments')
-
-	ssp_plot_parser_r.add_argument(
-						'-i', '--input-csv',
-						metavar = 'Input CSV file',
-						required=True,
-						dest = 'csv',
-						help='Must be a csv file that with corresponding names to the alignment',
-						widget='FileChooser',
-						)
-
-	ssp_plot_parser_r.add_argument(
-						'-cl', '--class_label',
-						metavar = 'Class label',
-						#required=True,
-						default = 'Class',
-						dest = 'cl',
-						help='An alternative column with the class label in the CSV file can be specified',
-						)
-
-	ssp_plot_parser_r.add_argument(
-						'-a', '--alignment',
-						metavar = 'Alignment',
-						required=True,
-						dest = 'ali',
-						help='Input file, must be a sequence alignment with corresponding names to the CSV file',
-						widget='FileChooser'
-						)
-
-	ssp_plot_parser_r.add_argument(
-					'-v', '--verbose',
-					metavar = 'Verbose Mode',
-					required=False,
-					dest = 'ver',
-					help='Shows additional details',
-					action='store_true',
-					default = False,
-					)
-
-
 
 	################################
 	# SSR add pdb to MSA

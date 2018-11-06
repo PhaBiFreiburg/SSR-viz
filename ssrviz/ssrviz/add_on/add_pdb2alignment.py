@@ -358,8 +358,11 @@ def add_pos2csv(csv_input, csv_output, map_df, pdb_path):
 	pandas_dict = {}
 	for key, row in row_dict.items():
 		df = pd.DataFrame.from_records(row, columns = header_dict[key])
+		# print('*'*100)
+		# print(df)
 		df.set_index('Position', inplace = True)
-		df.sort_index(inplace=True, ascending = False)
+		df.sort_values(by=['Score'], inplace = True, ascending = False)
+		#df.sort_index(inplace=True, ascending = False)
 		pandas_dict[key] = df
 
 	csv_text = ''

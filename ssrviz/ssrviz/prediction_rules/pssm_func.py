@@ -70,6 +70,9 @@ def get_stats(df, pssm_dict, path, cons_percentage = 0.05):
 	pssm_cons_table = pssm_cons_t(pssm_dict, df.columns, cons_percentage)
 
 	file_text = ''
+
+	df = df.round(4)
+
 	for indices, row in df.iterrows():
 		# print(indices[2])
 		# print(indices)
@@ -811,6 +814,8 @@ def df2pssm_visual(df = None,
 	index = 0
 
 	for df_plot, df_heatmap in zip(listofdf_plot, listofdf_heatmap):
+
+		print(df_plot)
 
 		df_plot.sort_index(axis = 0, level = 0, inplace = True)
 		df_heatmap.sort_index(axis = 0, level = 0, ascending=False ,inplace = True)
