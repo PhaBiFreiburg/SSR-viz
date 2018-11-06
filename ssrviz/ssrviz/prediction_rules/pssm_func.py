@@ -556,6 +556,18 @@ def df2pssm_visual(df = None,
 					**kwargs):
 
 	################
+	#Runs a detailed verbose output
+	################
+	verbose = False
+	if 'verbose' in kwargs.keys():
+		if kwargs['verbose']:
+			verbose = True
+
+	if verbose:
+		print()
+		print(kwargs)
+
+	################
 	#todo doulbe check this set-up !!
 	################
 
@@ -765,8 +777,15 @@ def df2pssm_visual(df = None,
 	# 	row[columns_to_drop] = -1         #set to nan
 	# 	return(row)
 
+	print('*'*100)
+	print(df_plot.iloc[:, 0:10])
+
 	if 'get_outliers_z' in kwargs:
 		df_plot = df_plot.apply(lambda row: outliers_z_score(row, kwargs['get_outliers_z']), axis =1)
+
+	print('*'*100)
+	print(df_plot.iloc[:, 0:10])
+	exit()
 
 	if 'get_best' in kwargs:
 		df_plot = df_plot.apply(lambda row: drop_lowest(row, kwargs['get_best']), axis =1)
@@ -814,8 +833,6 @@ def df2pssm_visual(df = None,
 	index = 0
 
 	for df_plot, df_heatmap in zip(listofdf_plot, listofdf_heatmap):
-
-		print(df_plot)
 
 		df_plot.sort_index(axis = 0, level = 0, inplace = True)
 		df_heatmap.sort_index(axis = 0, level = 0, ascending=False ,inplace = True)
