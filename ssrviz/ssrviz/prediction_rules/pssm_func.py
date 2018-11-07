@@ -555,6 +555,7 @@ def df2pssm_visual(df = None,
 					#get_outliers_z = True,
 					**kwargs):
 
+
 	################
 	#Runs a detailed verbose output
 	################
@@ -564,7 +565,8 @@ def df2pssm_visual(df = None,
 			verbose = True
 
 	if verbose:
-		print()
+		print('*'*100)
+		print('Verbose kwargs:')
 		print(kwargs)
 
 	################
@@ -769,6 +771,24 @@ def df2pssm_visual(df = None,
 		row[columns_to_drop] = -1         #set to nan
 		return(row)
 
+	def clean_plot(row):
+		'''
+		Clean up function:
+		Values with 0 and more then 1 get cleaned
+		'''
+
+		if row.name[2]:
+			return(row)
+
+		columns_to_minus = (row <= 0)
+		row[columns_to_minus] = -1
+
+		columns_to_one = (row >= 1)
+		row[columns_to_one] = 1
+
+		return(row)		  
+
+
 	# def drop_by_panalty(row, panalty):
 	# 	if not row.name[2]:
 	# 		return(row)
@@ -777,18 +797,39 @@ def df2pssm_visual(df = None,
 	# 	row[columns_to_drop] = -1         #set to nan
 	# 	return(row)
 
-	print('*'*100)
-	print(df_plot.iloc[:, 0:10])
+	if verbose:
+		print('*'*100)
+		print('Verbose raw df plot :')
+		print(df_plot.iloc[:, 0:10])
 
 	if 'get_outliers_z' in kwargs:
 		df_plot = df_plot.apply(lambda row: outliers_z_score(row, kwargs['get_outliers_z']), axis =1)
 
-	print('*'*100)
-	print(df_plot.iloc[:, 0:10])
-	exit()
+	if verbose:
+		print('*'*100)
+		print('Verbose after outlier df plot :')
+		print(df_plot.iloc[:, 0:10])
 
 	if 'get_best' in kwargs:
 		df_plot = df_plot.apply(lambda row: drop_lowest(row, kwargs['get_best']), axis =1)
+
+	if verbose:
+		print('*'*100)
+		print('Verbose after get_best df plot :')
+		print(df_plot.iloc[:, 0:10])
+
+	###########################
+	#In the plot if a value is 0 is should be set to -1 to not
+	#be part of the plot
+	#if it is higher then 1 is should be set to 1
+	###########################
+
+	df_plot = df_plot.apply(lambda row: clean_plot(row), axis =1)
+
+	if verbose:
+		print('*'*100)
+		print('Verbose after clean df plot :')
+		print(df_plot.iloc[:, 0:10])
 
 	# if 'drop_panalty' in kwargs:
 	# 	df_plot = df_plot.apply(lambda row: drop_by_panalty(row, kwargs['drop_panalty']), axis =1)
@@ -980,7 +1021,7 @@ def df2pssm_visual(df = None,
 
 	cb1 = mpl.colorbar.ColorbarBase(ax, cmap='YlOrRd', orientation='horizontal')
 	cb1.ax.tick_params(labelsize=fontsize)
-	cb1.set_label('Colorbar range', fontsize = fontsize)
+	cb1.set_label('Colorbar range (1: highest SSR; 0: lowest SSR)', fontsize = fontsize)
 
 	figure_list = [fig] + figure_list
 

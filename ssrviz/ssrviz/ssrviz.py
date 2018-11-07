@@ -197,15 +197,15 @@ such as notepad or sublime or online: https://regex101.com/
 						help='Must exist in the pdb',
 						)
 
-	add_pdb_parser_r.add_argument(
-						'-t', '--temp',
-						metavar = 'Temporary folder',
-						required=True,
-						# default = 'temp',
-						dest = 'temp',
-						help='Directory for the added alignment of the pdb and the mafft map file',
-						widget="DirChooser",
-						)
+	# add_pdb_parser_r.add_argument(
+	# 					'-t', '--temp',
+	# 					metavar = 'Temporary folder',
+	# 					required=True,
+	# 					# default = 'temp',
+	# 					dest = 'temp',
+	# 					help='Directory for the added alignment of the pdb and the mafft map file',
+	# 					widget="DirChooser",
+	# 					)
 
 	add_pdb_parser_r.add_argument(
 						'-m', '--mafft',
@@ -379,8 +379,9 @@ such as notepad or sublime or online: https://regex101.com/
 		'''.format(str(seq_offset + 1))
 		)
 
-
-		map_file = add_pdb2alignment.mafft_add_seq(args.mafft, args.ali, seq, args.temp)
+		TEMP_FOLDER = tempfile.gettempdir()
+		map_file = add_pdb2alignment.mafft_add_seq(args.mafft, args.ali, seq, TEMP_FOLDER)
+		#map_file = add_pdb2alignment.mafft_add_seq(args.mafft, args.ali, seq, args.temp)
 		map_df = add_pdb2alignment.map2df(map_file, seq_offset)
 		add_pdb2alignment.add_pos2csv(args.i_csv, args.o_csv, map_df, args.pdb)
 
