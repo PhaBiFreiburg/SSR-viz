@@ -4,6 +4,11 @@
 
 dist/
 build/
+test_ssrviz/
+ssrviz.egg-info/
 
 Data*/
 *venv*/
+
+.Rhistory
+
