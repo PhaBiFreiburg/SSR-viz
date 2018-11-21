@@ -184,9 +184,9 @@ for an explanation.''',
 	fig_opts_g = parser.add_argument_group('Figure')
 
 	fig_opts_g.add_argument('-tl','--top_label', 
-					metavar = 'Remove label from top of the plot',
-					help='''Remove label from top of each plot,
-more then 14 are too many''',
+					metavar = 'Remove legend from top of the plot',
+					help='''Remove legend from top of each plot,
+more then 14 subfamilies are too many to show''',
 					action='store_true',
 					dest = 'tl',
 					default = False,
